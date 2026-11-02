@@ -1,5 +1,7 @@
 # 📍 Kommunale Kita-Bedarfs- & Versorgungsanalyse (§ 80 SGB VIII)
 
+[![CI & Code Quality](https://github.com/sosimple83/kita-spatial-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/sosimple83/kita-spatial-pipeline/actions/workflows/ci.yml)
+
 [![Python](https://img.shields.io/badge/Python-3.12%2B-blue?logo=python)](https://www.python.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue?logo=postgresql)](https://www.postgresql.org/)
 [![PostGIS](https://img.shields.io/badge/PostGIS-3.4-green?logo=postgis)](https://postgis.net/)
@@ -62,6 +64,18 @@ Kommunale Träger der öffentlichen Jugendhilfe sind nach **§ 80 SGB VIII** ges
 * **Backend Services:** FastAPI, Pydantic v2, Uvicorn
 * **Orchestrierung:** Docker & Docker Compose
 * **Frontend / Dashboarding:** Appsmith CE (alternativ QGIS Desktop / WebGIS-Clients)
+
+---
+
+## 🌐 GDI-DE & OGC-Konformität (Enterprise Architecture)
+
+Die Pipeline wurde gezielt für interoperable Geodateninfrastrukturen (GDI) im kommunalen und Landeskontext konzipiert:
+
+* **Separation of Concerns:** Performante relationale Vektorverarbeitung (`PostGIS 3+`, GiST-Indizierung, metrische Berechnungen strictly in `EPSG:25833`) getrennt von der API-Präsentationslogik.
+* **OGC-Schnittstellenfähigkeit:** Die Datenhaltung ist direkt kompatibel zu deegree, GeoServer und QGIS Server (Bereitstellung als WFS 2.0 / OGC API Features ohne Mapping-Layer).
+* **RFC 7946 GeoJSON Standard:** Alle API-Endpunkte transformieren Koordinaten on-the-fly verlustfrei nach `EPSG:4326` (WGS84) für interoperable Web-Clients.
+* **Transaktionssichere Fachlogik:** Die Grenzraumanalyse (§ 80 SGB VIII) ist als atomare PL/pgSQL Stored Procedure realisiert – keine fehleranfällige clientseitige Puffer-Geometrie-Arithmetik.
+* **Transferierbare Fachmethodik:** Das relationale Verschneidungs- und Normierungsmodell lässt sich 1:1 auf ALKIS-Flurstücksprüfungen (XPlanung) sowie kommunale Wärme- und Schulentwicklungsplanungen übertragen.
 
 ---
 
