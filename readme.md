@@ -97,8 +97,8 @@ Kommunale Träger der öffentlichen Jugendhilfe sind nach **§ 80 SGB VIII** ges
 ### 1. Repository klonen & Konfiguration anlegen
 
 ```bash
-git clone https://github.com/sosimple83/kita-bedarfsplanung.git
-cd kita-bedarfsplanung
+git clone https://github.com/sosimple83/kita-spatial-pipeline.git
+cd kita-spatial-pipeline
 
 # Konfigurationsdatei aus Vorlage erzeugen
 cp .env.example .env
