@@ -1,0 +1,24 @@
+# Python & Virtualenv
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Umgebungsvariablen
+.env
+
+# Geodaten & Rohdaten
+*.csv
+*.xlsx
+*.xls
+*.json
+*.geojson
+data/
+db/pgdata/
+stacks/
+
+# System / IDE
+.DS_Store
+.idea/
+.vscode/

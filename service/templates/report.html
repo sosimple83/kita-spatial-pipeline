@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>§ 80 SGB VIII Vorbericht</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 15mm;
+            @bottom-right {
+                content: "Seite " counter(page) " von " counter(pages);
+                font-family: Arial, sans-serif;
+                font-size: 8pt;
+                color: #666;
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            color: #222;
+            line-height: 1.35;
+            font-size: 10pt;
+            margin: 0;
+        }
+        .header {
+            border-bottom: 2px solid #003366;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 15pt;
+            color: #003366;
+        }
+        .header p {
+            margin: 3px 0 0 0;
+            font-size: 8.5pt;
+            color: #555;
+        }
+        .meta-box {
+            background-color: #f4f6f8;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: table;
+            width: 100%;
+        }
+        .meta-item {
+            display: table-cell;
+            width: 25%;
+            font-size: 8.5pt;
+        }
+        .meta-item strong {
+            display: block;
+            font-size: 11pt;
+            color: #003366;
+        }
+        .map-container {
+            width: 100%;
+            height: 180px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            text-align: center;
+            background-color: #eaeaea;
+        }
+        .map-container img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 8.5pt;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 5px 7px;
+            text-align: left;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        .status-rot {
+            color: #c00;
+            font-weight: bold;
+        }
+        .status-gelb {
+            color: #d90;
+            font-weight: bold;
+        }
+        .status-gruen {
+            color: #080;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Bezirkliche Bedarfszuarbeit (§ 80 SGB VIII)</h1>
+        <p>Grenzraum-Schnittstellenanalyse Wohnungsbau | Friedrichshain-Kreuzberg</p>
+    </div>
+
+    <div class="meta-box">
+        <div class="meta-item">Bauvolumen:<strong>{{ we }} WE</strong></div>
+        <div class="meta-item">Bedarf U6 (Faktor 0.15):<strong>+{{ kinder_gesamt }} Kinder</strong></div>
+        <div class="meta-item">Prüfradius:<strong>{{ buffer_meter }} m</strong></div>
+        <div class="meta-item">Standort:<strong>{{ lat }}°N, {{ lon }}°E</strong></div>
+    </div>
+
+    <div class="map-container">
+        <!-- Statische WMS-Karte des Berliner Geoportals -->
+        <img src="{{ map_url }}" alt="WMS Kartenausschnitt LOR-Planungsräume">
+    </div>
+
+    <h3>Schnittmengenbilanz nach Planungsräumen (100-%-Plausibilisierung)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>LOR-Schlüssel</th>
+                <th>Planungsraum</th>
+                <th>Bezirk</th>
+                <th>Flächenanteil</th>
+                <th>Zusatzbedarf</th>
+                <th>Bestand Plätze</th>
+                <th>Auslastung neu</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in items %}
+            <tr>
+                <td>{{ row.plr_id }}</td>
+                <td>{{ row.plr_name }}</td>
+                <td>{{ row.bezirk_name }}</td>
+                <td>{{ row.anteil_prozent }} %</td>
+                <td><strong>+{{ row.kinder_zuzug }}</strong></td>
+                <td>{{ row.plaetze_ist }}</td>
+                <td class="{% if row.auslastung_neu > 100 %}status-rot{% elif row.auslastung_neu > 85 %}status-gelb{% else %}status-gruen{% endif %}">
+                    {{ row.auslastung_neu }} %
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="font-size: 8pt; color: #666; margin-top: 15px; border-top: 1px solid #ddd; padding-top: 5px;">
+        <em>Hinweis: Automatisch erzeugter Entwurf auf Basis offener Geodaten (Data Hub Berlin, FIS-Broker, AfS). Vorlage dient der behördlichen Zuarbeit gemäß § 80 SGB VIII. Alle Berechnungen erfolgen aggregiert und datenschutzkonform (Zero PII).</em>
+    </div>
+
+</body>
+</html>
